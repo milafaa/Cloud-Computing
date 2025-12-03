@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gift_bymil | Kesiapapun Bisa Apapun Bisa</title>
+    
+    <!-- Library Eksternal -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- HUBUNGKAN KE CSS (File ke-2) -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- CSS khusus untuk Tailwind breakpoints dan pemusatan konten -->
+    <style>
+        /* Class wrapper untuk membatasi konten di tengah pada desktop */
+        .content-wrapper {
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1.5rem; /* px-6 default (mobile) */
+            padding-right: 1.5rem; /* px-6 default (mobile) */
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper {
+                max-width: 1000px; /* Lebar konten utama di desktop */
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CONTAINER UTAMA APLIKASI (Sekarang full width di desktop) -->
+    <div id="app-container">
+        
+        <!-- HEADER (Selalu Muncul) -->
+        <header class="header-bg pt-10 pb-5 shadow-sm sticky top-0 z-20 transition-all duration-300">
+            <div class="content-wrapper">
+                <!-- Header Home View -->
+                <div id="home-header" class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                    <img src="img/logo.jpeg"
+                     class="w-12 h-auto object-contain"
+                     alt="Logo Gift_bymil">
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">Gift_bymil</h1>
+                        <p class="text-xs font-medium text-gray-700 opacity-80">Kesiapapun Bisa Apapun Bisa</p>
+                    </div>
+                    </div>
+                    <!-- Kanan: Notifikasi, Keranjang, Akun -->
+                    <div class="flex items-center space-x-3">
+                        <!-- Tombol Notifikasi -->
+                        <div class="bg-white p-2 rounded-full shadow-md cursor-pointer hover:bg-gray-50 transition relative">
+                           <div id="notification-badge" class="absolute top-2 right-2.5 w-2 h-2 bg-yellow-500 rounded-full border border-white hidden"></div>
+                           <i class="ph ph-bell text-xl text-gray-700"></i>
+                        </div>
+                        
+                        <!-- Tombol Keranjang -->
+                        <div class="bg-white p-2 rounded-full shadow-md cursor-pointer hover:bg-gray-50 transition relative" onclick="toggleCart(true)">
+                            <div id="cart-badge-desktop" class="absolute top-2 right-2.5 bg-red-500 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full hidden shadow-sm border border-white">0</div>
+                            <i class="ph ph-shopping-bag text-xl text-gray-700"></i>
+                        </div>
+
+                        <!-- Tombol Akun -->
+                        <div class="bg-white p-2 rounded-full shadow-md cursor-pointer hover:bg-gray-50 transition">
+                            <i class="ph ph-user text-xl text-gray-700"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Header Filter View (Muncul saat filter diklik) -->
+                <div id="filter-header" class="hidden flex items-center gap-3">
+                    <button onclick="showHomeView()" class="bg-white p-2 rounded-full shadow-md text-gray-700 hover:bg-gray-100 transition">
+                        <i class="ph ph-arrow-left text-xl"></i>
+                    </button>
+                    <h2 id="filter-title" class="text-lg font-bold text-gray-900"></h2>
+                </div>
+            </div>
+        </header>
+
+        <!-- KONTEN UTAMA (HOME VIEW) -->
+        <main id="home-view" class="pb-20 pt-4">
+            <div class="content-wrapper">
+                <!-- 1. DESKRIPSI USAHA -->
+                <section class="mb-8">
+                    <h3 class="text-sm font-bold text-gray-800 mb-2">Tentang Kami</h3>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Gift bymil adalah toko kado online yang menyediakan berbagai macam pilihan kado untuk Kamu yang akan memberi hadiah di hari spesial orang tersayangmu. Kami juga menyediakan layanan pembungkusan kado yang cantik dan personalisasi untuk membuat kado Kamu semakin istimewa. Gift bymil berkomitmen untuk menyediakan kado dengan bahan berkualitas tinggi dan desain yang menarik serta memberikan pelayanan yang ramah dan responsif kepada pelanggan dengan harga yang terjangkau.
+                    </div>
+                </section>
+
+                <!-- 2. BANNER PROMOSI
+                <section class="mb-8">
+                    <div class="banner-card w-full h-32 rounded-xl p-4 flex items-center justify-between shadow-lg">
+                        <div>
+                            <p class="text-xs font-semibold text-gray-100 mb-1">PROMO SPESIAL</p>
+                            <h2 class="text-xl font-bold text-white leading-tight">Diskon 15%</h2>
+                            <p class="text-sm text-gray-200 mt-1">Untuk semua Bingkai Custom!</p>
+                        </div>
+                        <button class="bg-white text-gray-900 text-xs font-bold px-4 py-2 rounded-lg hover:bg-yellow-50 transition shadow-md">
+                            Klaim Sekarang
+                        </button>
+                    </div>
+                </section> -->
+
+                <!-- 3. KATEGORI (Foto Interaktif) -->
+                <section class="mb-8">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Kategori</h3>
+                    <!-- RESPONSIVE GRID: 2 kolom di mobile, 3 kolom di desktop -->
+                    <div id="category-container" class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- JS mengisi Kategori di sini -->
+                    </div>
+                </section>
+                
+                <!-- 4. 3 PRODUK BEST SELLER -->
+                <section class="mb-8">
+                    <div class="flex justify-between items-end mb-4">
+                        <h2 class="text-lg font-bold text-red-600">Best Seller</h2>
+                    </div>
+                    
+                    <!-- RESPONSIVE GRID: 2 kolom di mobile, 3 kolom di desktop -->
+                    <div id="best-seller-container" class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- JS mengisi 3 produk Best Seller di sini -->
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- KONTEN FILTER (PRODUCT LIST VIEW) -->
+        <section id="product-list-view" class="pb-20 pt-4 hidden">
+             <div class="content-wrapper">
+                <!-- RESPONSIVE GRID: 2 kolom di mobile, 4 kolom di desktop -->
+                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4" id="product-list-filtered">
+                    <!-- JS mengisi produk yang difilter di sini -->
+                 </div>
+             </div>
+        </section>
+
+
+        <!-- MODAL KERANJANG -->
+        <div id="cart-modal" class="fixed inset-x-0 bottom-0 h-[85vh] bg-white rounded-t-3xl shadow-[0_-5px_20px_rgba(0,0,0,0.1)] z-40 transform translate-y-full flex flex-col mx-auto">
+            <!-- Pegangan Modal -->
+            <div class="w-full flex justify-center pt-3 pb-1" onclick="toggleCart(false)">
+                <div class="w-12 h-1.5 bg-gray-300 rounded-full cursor-pointer hover:bg-gray-400 transition"></div>
+            </div>
+
+            <!-- Header Keranjang -->
+            <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-gray-800">Keranjang Saya</h2>
+                <button onclick="toggleCart(false)" class="bg-gray-100 p-1 rounded-full text-gray-500 hover:text-red-500 hover:bg-red-50 transition">
+                    <i class="ph ph-x text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Isi Keranjang -->
+            <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <div class="flex flex-col items-center justify-center h-full text-gray-300 mt-10">
+                    <div class="bg-gray-50 p-6 rounded-full mb-4">
+                        <i class="ph-duotone ph-shopping-cart text-4xl text-gray-300"></i>
+                    </div>
+                    <p class="font-medium text-gray-500">Keranjang kosong</p>
+                    <p class="text-xs mt-1 text-gray-400">Yuk pilih kado dulu!</p>
+                </div>
+            </div>
+
+            <!-- Footer Checkout -->
+            <div class="p-6 border-t border-gray-100 bg-gray-50 rounded-t-2xl">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-gray-500 font-medium">Total Harga</span>
+                    <span id="cart-total" class="text-xl font-bold text-gray-900">Rp 0</span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-gray-900 text-white py-4 rounded-xl font-semibold shadow-lg hover:bg-gray-800 active:scale-95 transition flex justify-center items-center gap-2">
+                    <span>Checkout via WA</span>
+                    <i class="ph-bold ph-whatsapp-logo text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- MENU BAWAH (NAVIGASI) - Disembunyikan di desktop menggunakan class lg:hidden -->
+        <nav class="bottom-nav lg:hidden fixed bottom-0 w-full px-6 py-3 flex justify-between items-center z-30">
+            <button class="flex flex-col items-center text-yellow-600 transition" onclick="showHomeView()">
+                <i class="ph-fill ph-house text-2xl mb-0.5"></i>
+                <span class="text-[10px] font-medium">Beranda</span>
+            </button>
+            
+            <button class="flex flex-col items-center text-gray-400 hover:text-gray-900 transition relative group" onclick="toggleCart(true)">
+                <div id="cart-badge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full hidden shadow-sm border border-white">0</div>
+                <div class="group-active:scale-90 transition">
+                    <i class="ph ph-shopping-bag text-2xl mb-0.5"></i>
+                </div>
+                <span class="text-[10px] font-medium">Keranjang</span>
+            </button>
+
+            <button class="flex flex-col items-center text-gray-400 hover:text-gray-900 transition">
+                <i class="ph ph-user text-2xl mb-0.5"></i>
+                <span class="text-[10px] font-medium">Akun</span>
+            </button>
+        </nav>
+
+        <!-- NOTIFIKASI TOAST -->
+        <div id="toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 bg-gray-900/90 backdrop-blur-sm text-white px-6 py-3 rounded-full shadow-xl z-50 transition-all duration-300 opacity-0 translate-y-[-20px] pointer-events-none flex items-center gap-3 min-w-max">
+            <div class="bg-green-500 rounded-full p-0.5">
+                <i class="ph-bold ph-check text-white text-xs"></i>
+            </div>
+            <span class="text-sm font-medium">Masuk keranjang!</span>
+        </div>
+
+    </div>
+
+    <!-- HUBUNGKAN KE JS (File ke-3) -->
+    <script src="script.js"></script>
+</body>
+</html>
